@@ -1,8 +1,14 @@
+using Microsoft.EntityFrameworkCore;
+using RazorCrudUI.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
-
+builder.Services.AddDbContext<ItemsContext>(options =>
+        options.UseSqlServer(
+        builder.Configuration.GetConnectionString("Default")));
+        //database is connected
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
