@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RazorCrudUI.Models;
     public class ItemModel
@@ -6,10 +7,13 @@ namespace RazorCrudUI.Models;
     public int Id { get; set; }
 
     [Display(Name = "Item Name")]
-    public String Name { get; set; }
+    [Required]
+    public String? Name { get; set; }
 
-    public String Description { get; set; }
-
+    public String? Description { get; set; }
+    [Range(0, 10000)]
+    [Column(TypeName = "decimal(18, 2)")]
+    [DataType(DataType.Currency)]
     public decimal Price { get; set; }
 }
 
