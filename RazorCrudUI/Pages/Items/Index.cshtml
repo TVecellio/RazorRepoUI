@@ -10,6 +10,13 @@
 <p>
     <a asp-page="Create" class="btn btn-primary btn-sm"><i class="bi bi-cart-plus"></i></a>
 </p>
+
+<form>
+    <p>
+        Name of Item: <input type="text" asp-for="SearchString" />
+        <input type="submit" value="Filter" />
+    </p>
+</form>
 <table class="table">
     <thead>
         <tr>
@@ -38,9 +45,9 @@
                 @Html.DisplayFor(modelItem => item.Price)
             </td>
             <td>
-                    <a asp-page="./Edit" asp-route-id="@item.Id" class="btn btn-secondary text-body">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.Id" class="btn btn-secondary text-body">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Id" class="btn btn-danger text-white">Delete</a>
+                    <a asp-page="./Edit" asp-route-id="@item.Id" class="btn btn-secondary text-body"><i class="bi bi-pencil"></i></a> |
+                    <a asp-page="./Details" asp-route-id="@item.Id" class="btn btn-secondary text-body"><i class="bi bi-info-circle"></i></a> |
+                    <a asp-page="./Delete" asp-route-id="@item.Id" class="btn btn-danger text-body"><i class="bi bi-x-circle-fill"></i></a>
             </td>
         </tr>
 }

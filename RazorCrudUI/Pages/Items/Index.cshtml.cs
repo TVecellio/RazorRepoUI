@@ -21,9 +21,25 @@ namespace RazorCrudUI.Pages.Items
 
         public IList<ItemModel> ItemModel { get;set; } = default!;
 
+
+        [BindProperty(SupportsGet = true)]
+        public string? SearchString { get; set; }
+
+
         public async Task OnGetAsync()
         {
+
+
+            var items = from item in _context.Items
+                        select item;
+            if(!string.IsNullOrEmpty(SearchString))
+            {
+                items = items.Where(s => s.Name.Equals(SearchString));
+            }
+            
             ItemModel = await _context.Items.ToListAsync();
         }
     }
 }
+
+
