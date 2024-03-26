@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using RazorCrudUI.Data;
+using RazorRepoUI.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,8 +9,13 @@ builder.Services.AddRazorPages();
 builder.Services.AddDbContext<ItemsContext>(options =>
         options.UseSqlServer(
         builder.Configuration.GetConnectionString("Default")));
-        //database is connected
+//database is connected
+
+
+builder.Services.AddScoped<IItemRepository, ItemRepositoryEF>();
 var app = builder.Build();
+
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

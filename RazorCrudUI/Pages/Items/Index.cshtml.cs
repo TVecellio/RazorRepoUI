@@ -34,7 +34,7 @@ namespace RazorCrudUI.Pages.Items
                         select item;
             if(!string.IsNullOrEmpty(SearchString))
             {
-                items = items.Where(s => s.Name.Equals(SearchString));
+                items =  items.Where(s => s.Name.Equals(SearchString));
             }
             
             ItemModel = await _context.Items.ToListAsync();
