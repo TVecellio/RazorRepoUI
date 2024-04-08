@@ -20,14 +20,11 @@ namespace RazorRepoUI.Data
 
         public IEnumerable<ItemModel> GetItems(string? filter)
         {
-            IQueryable<ItemModel> query = _context.Items;
-            if (filter != null)
+            if (string.IsNullOrEmpty(filter))
             {
-                query = query.Where(item => item.Name.Contains(filter));
-
-                return query.ToList();
+                return _context.Items.ToList();
             }
-            return null;
+            return _context.Items.Where(i => i.Name.Contains(filter)).ToList();
         }
 
         public ItemModel? GetItemByID(int id)
@@ -49,7 +46,7 @@ namespace RazorRepoUI.Data
             if (name != null)
             {
                 _context.Remove(id);
-                _contexr.SaveChanges();
+                _context.SaveChanges();
                 return name;
             } else {
                 return "No item found";

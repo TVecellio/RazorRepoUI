@@ -29,7 +29,14 @@ namespace RazorCrudUI.Pages.Items
 
         public async Task OnGetAsync()
         {
-            ItemModel = (IList<ItemModel>)_repo.GetItems(SearchString);
+            if (SearchString == null)
+            {
+                ItemModel = (IList<ItemModel>)_repo.GetItems();
+            }
+            else
+            {
+                ItemModel = (IList<ItemModel>)_repo.GetItems(SearchString);
+            }
         }
     }
 }
