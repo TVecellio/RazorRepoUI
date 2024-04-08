@@ -7,16 +7,17 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using RazorCrudUI.Data;
 using RazorCrudUI.Models;
+using RazorRepoUI.Data;
 
 namespace RazorCrudUI.Pages.Items
 {
     public class CreateModel : PageModel
     {
-        private readonly RazorCrudUI.Data.ItemsContext _context;
+        private readonly IItemRepository _repo;
 
-        public CreateModel(RazorCrudUI.Data.ItemsContext context)
+        public CreateModel(IItemRepository repo)
         {
-            _context = context;
+            _repo = repo;
         }
 
         public IActionResult OnGet()
@@ -35,8 +36,7 @@ namespace RazorCrudUI.Pages.Items
                 return Page();
             }
 
-            _context.Items.Add(ItemModel);
-            await _context.SaveChangesAsync();
+            _repo.insertItem(ItemModel);
 
             return RedirectToPage("./Index");
         }

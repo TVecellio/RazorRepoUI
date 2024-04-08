@@ -7,16 +7,17 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using RazorCrudUI.Data;
 using RazorCrudUI.Models;
+using RazorRepoUI.Data;
 
 namespace RazorCrudUI.Pages.Items
 {
     public class DeleteModel : PageModel
     {
-        private readonly RazorCrudUI.Data.ItemsContext _context;
+        private readonly IItemRepository _repo;
 
-        public DeleteModel(RazorCrudUI.Data.ItemsContext context)
+        public DeleteModel(IItemRepository repo)
         {
-            _context = context;
+            _repo = repo;
         }
 
         [BindProperty]
@@ -29,7 +30,7 @@ namespace RazorCrudUI.Pages.Items
                 return NotFound();
             }
 
-            var itemmodel = await _context.Items.FirstOrDefaultAsync(m => m.Id == id);
+            var itemmodel = _repo.GetItemByID(id.Value);
 
             if (itemmodel == null)
             {
@@ -49,13 +50,7 @@ namespace RazorCrudUI.Pages.Items
                 return NotFound();
             }
 
-            var itemmodel = await _context.Items.FindAsync(id);
-            if (itemmodel != null)
-            {
-                ItemModel = itemmodel;
-                _context.Items.Remove(ItemModel);
-                await _context.SaveChangesAsync();
-            }
+           _repo.deleteItem(id.Value);
 
             return RedirectToPage("./Index");
         }

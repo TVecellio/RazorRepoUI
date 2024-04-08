@@ -8,16 +8,17 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using RazorCrudUI.Data;
 using RazorCrudUI.Models;
+using RazorRepoUI.Data;
 
 namespace RazorCrudUI.Pages.Items
 {
     public class EditModel : PageModel
     {
-        private readonly RazorCrudUI.Data.ItemsContext _context;
+        private readonly IItemRepository _repo;
 
-        public EditModel(RazorCrudUI.Data.ItemsContext context)
+        public EditModel(IItemRepository repo)
         {
-            _context = context;
+            _repo = repo;
         }
 
         [BindProperty]
@@ -30,7 +31,7 @@ namespace RazorCrudUI.Pages.Items
                 return NotFound();
             }
 
-            var itemmodel =  await _context.Items.FirstOrDefaultAsync(m => m.Id == id);
+            var itemmodel = _repo.GetItemByID(id.Value);
             if (itemmodel == null)
             {
                 return NotFound();
@@ -48,30 +49,10 @@ namespace RazorCrudUI.Pages.Items
                 return Page();
             }
 
-            _context.Attach(ItemModel).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ItemModelExists(ItemModel.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            if (!_repo.updateItem(ItemModel))
+                return NotFound();
 
             return RedirectToPage("./Index");
-        }
-
-        private bool ItemModelExists(int id)
-        {
-            return _context.Items.Any(e => e.Id == id);
         }
     }
 }

@@ -7,16 +7,17 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using RazorCrudUI.Data;
 using RazorCrudUI.Models;
+using RazorRepoUI.Data;
 
 namespace RazorCrudUI.Pages.Items
 {
     public class IndexModel : PageModel
     {
-        private readonly RazorCrudUI.Data.ItemsContext _context;
+        private readonly IItemRepository  _repo;
 
-        public IndexModel(RazorCrudUI.Data.ItemsContext context)
+        public IndexModel(IItemRepository repo)
         {
-            _context = context;
+            _repo = repo;
         }
 
         public IList<ItemModel> ItemModel { get;set; } = default!;
@@ -28,16 +29,7 @@ namespace RazorCrudUI.Pages.Items
 
         public async Task OnGetAsync()
         {
-
-
-            var items = from item in _context.Items
-                        select item;
-            if(!string.IsNullOrEmpty(SearchString))
-            {
-                items =  items.Where(s => s.Name.Equals(SearchString));
-            }
-            
-            ItemModel = await _context.Items.ToListAsync();
+            ItemModel = (IList<ItemModel>)_repo.GetItems(SearchString);
         }
     }
 }

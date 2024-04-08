@@ -6,7 +6,7 @@ namespace RazorRepoUI.Data
     public interface IItemRepository
     {
         IEnumerable<ItemModel> GetItems();
-        IEnumerable<ItemModel> GetItems(string filter);
+        IEnumerable<ItemModel> GetItems(string? filter);
 
         ItemModel? GetItemByID(int id);
 

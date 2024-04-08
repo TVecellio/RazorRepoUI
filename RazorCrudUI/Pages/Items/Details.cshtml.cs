@@ -7,16 +7,17 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using RazorCrudUI.Data;
 using RazorCrudUI.Models;
+using RazorRepoUI.Data;
 
 namespace RazorCrudUI.Pages.Items
 {
     public class DetailsModel : PageModel
     {
-        private readonly RazorCrudUI.Data.ItemsContext _context;
+        private readonly IItemRepository _repo;
 
-        public DetailsModel(RazorCrudUI.Data.ItemsContext context)
+        public DetailsModel(IItemRepository repo)
         {
-            _context = context;
+            _repo = repo;
         }
 
         public ItemModel ItemModel { get; set; } = default!;
@@ -28,7 +29,7 @@ namespace RazorCrudUI.Pages.Items
                 return NotFound();
             }
 
-            var itemmodel = await _context.Items.FirstOrDefaultAsync(m => m.Id == id);
+            var itemmodel = _repo.GetItemByID(id.Value);
             if (itemmodel == null)
             {
                 return NotFound();
